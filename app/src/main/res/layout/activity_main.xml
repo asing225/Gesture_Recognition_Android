@@ -4,115 +4,194 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:ignore="LabelFor">
 
-    <TextView
-        android:id="@+id/Patient_id"
-        android:layout_width="64dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="64dp"
-        android:text="Patient ID"
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="395dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/Patient_Name"
-        android:layout_width="89dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="12dp"
+        <TextView
+            android:id="@+id/ID"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/patient_id" />
+
+        <TextView
+            android:id="@+id/Age"
+            android:layout_width="11dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/age" />
+
+        <TextView
+            android:id="@+id/Name"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:text="@string/patient_name" />
+
+        <TextView
+            android:id="@+id/sex"
+            android:layout_width="11dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="30dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/sex" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="402dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <EditText
+            android:id="@+id/ID_text"
+            android:layout_width="wrap_content"
+            android:layout_height="76dp"
+            android:layout_marginStart="35dp"
+            android:layout_weight="1"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="textPersonName"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/age_text"
+            android:layout_width="162dp"
+            android:layout_height="76dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/Name_text"
+            android:layout_width="173dp"
+            android:layout_height="76dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            tools:targetApi="o" />
+
+        <RadioGroup
+            android:layout_width="182dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1">
+
+            <RadioButton
+                android:id="@+id/male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/male" />
+
+            <RadioButton
+                android:id="@+id/female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/female" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="408dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <Button
+            android:id="@+id/run"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="#4CAF50"
+            android:text="Run" />
+
+        <Button
+            android:id="@+id/stop"
+            android:layout_width="49dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="50dp"
+            android:layout_weight="1"
+            android:background="#F44336"
+            android:text="Stop" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="418dp"
+        android:layout_height="756dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Patient Name"
-        app:layout_constraintBottom_toTopOf="@+id/Sex"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.833"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Age"
-        app:layout_constraintVertical_bias="0.49" />
+        app:layout_constraintTop_toTopOf="@+id/linearLayout4"
+        app:layout_constraintVertical_bias="0.781">
 
-    <TextView
-        android:id="@+id/Sex"
-        android:layout_width="68dp"
-        android:layout_height="22dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="416dp"
+        android:layout_height="512dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Sex"
-        app:layout_constraintEnd_toStartOf="@+id/male"
-        app:layout_constraintHorizontal_bias="0.106"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/Age"
-        android:layout_width="66dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="48dp"
-        android:text="Age"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Patient_id" />
-
-    <EditText
-        android:id="@+id/ID_text"
-        android:layout_width="218dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.722"
-        app:layout_constraintStart_toEndOf="@+id/Patient_id"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/age_text"
-        android:layout_width="219dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textShortMessage|number|textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.712"
-        app:layout_constraintStart_toEndOf="@+id/Age"
-        app:layout_constraintTop_toBottomOf="@+id/ID_text" />
-
-    <EditText
-        android:id="@+id/name_text"
-        android:layout_width="223dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.676"
-        app:layout_constraintStart_toEndOf="@+id/Patient_Name"
-        app:layout_constraintTop_toBottomOf="@+id/age_text" />
-
-    <RadioButton
-        android:id="@+id/male"
-        android:layout_width="95dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="32dp"
-        android:text="Male"
-        app:layout_constraintEnd_toStartOf="@+id/female"
-        app:layout_constraintTop_toBottomOf="@+id/name_text" />
-
-    <RadioButton
-        android:id="@+id/female"
-        android:layout_width="97dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="28dp"
-        android:text="female"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_text" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.497"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/graph"
@@ -130,7 +209,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="NotSibling" />
 
 
     <!--<com.example.heartrate_android.GraphView

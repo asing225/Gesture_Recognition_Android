@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">HeartRate_Android</string>
+    <string name="female">female</string>
+    <string name="male">Male</string>
+    <string name="patient_id">Patient ID</string>
+    <string name="patient_name">Patient Name</string>
+    <string name="sex">Sex</string>
+    <string name="age">Age</string>
 </resources>
