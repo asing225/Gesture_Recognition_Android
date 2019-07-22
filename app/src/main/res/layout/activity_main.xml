@@ -113,13 +113,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_text" />
 
-    <com.example.heartrate_android.GraphView
+
+    <LinearLayout
+        android:id="@+id/graph"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:layout_below="@+id/female"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="368dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="63dp"
+        android:background="#979191"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--<com.example.heartrate_android.GraphView
         android:id="@+id/graphView"
         android:layout_width="370dp"
         android:layout_height="321dp"
         android:layout_marginEnd="22dp"
         android:layout_marginBottom="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
