@@ -164,9 +164,18 @@
     </LinearLayout>
 
 
+    <Button
+        android:id="@+id/nextPagebutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="Next Page" />
+
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="408dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -178,7 +187,7 @@
 
         <Button
             android:id="@+id/runBtn"
-            android:layout_width="48dp"
+            android:layout_width="54dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="20dp"
@@ -188,7 +197,7 @@
 
         <Button
             android:id="@+id/stopBtn"
-            android:layout_width="49dp"
+            android:layout_width="66dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="50dp"
@@ -200,7 +209,7 @@
     <FrameLayout
         android:id="@+id/visualizer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="200dp"
         android:layout_weight="1">
 
     </FrameLayout>

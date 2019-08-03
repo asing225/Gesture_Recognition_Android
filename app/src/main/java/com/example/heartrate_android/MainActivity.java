@@ -1,9 +1,11 @@
 package com.example.heartrate_android;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -33,6 +35,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.runBtn).setOnClickListener(this);
         findViewById(R.id.stopBtn).setOnClickListener(this);
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
+
+        Button SecondPageButton = (Button)findViewById(R.id.nextPagebutton);
+        SecondPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UserPage.class);
+                startActivity(intent);
+            }
+        });
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int in) {
