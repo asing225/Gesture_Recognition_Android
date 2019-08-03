@@ -1,101 +1,159 @@
 package com.example.heartrate_android;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
+import android.widget.FrameLayout;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+import java.util.Random;
+
 
 /**
- * @author amanjotsingh
- * @Date - 07/20/2019
- *
- * Description - class to start and stop the app.*/
+ * HeartRate_Android code was written by the Team4
+ * Mainly aimed to take inputs from patient- id, name, age and Sex
+ * and graph is plotted displaying their heart rate
+ */
+public class MainActivity extends Activity implements View.OnClickListener {
+    private GraphView graphDisplay;
+    private float[] graphPlotValues;
+    private boolean graphMove = true;
+    private Handler graphControlHandler = new Handler();
+    private int plotRefresh = 0;
+    private MyRunnable runnableGraph;
+    private final int interval = 8;
 
-public class MainActivity extends AppCompatActivity {
-
-    private float[] values = new float[60];
-    private String[] verticalLabels = new String[]{"500", "400", "300", "200", "100", "80", "60", "40", "20", "0",};
-    private String[] horizontalLabels = new String[]{"0", "10", "20", "30", "40", "50", "60"};
-    private GraphView graphView;
-    private LinearLayout graph;
-    private boolean runnable = false;
-
-
-    // method to be called on launch of the application
+    //This part handles the button backend (Event handlers) and Data Initialization for Graph
+    //@author Narendra Mohan Murali Mohan and Amanjot Singh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final RadioButton male = (RadioButton) findViewById(R.id.male);
-        final RadioButton female = (RadioButton) findViewById(R.id.female);
-
-        male.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.runBtn).setOnClickListener(this);
+        findViewById(R.id.stopBtn).setOnClickListener(this);
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
-            public void onClick(View view) {
-                female.setChecked(false);
-            }
-        });
-
-        female.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                male.setChecked(false);
-            }
-        });
-
-        graph = (LinearLayout) findViewById(R.id.graph);
-        graphView = new GraphView(this, values, "Health Monitor Graph View", horizontalLabels, verticalLabels, GraphView.LINE);
-        graph.addView(graphView);
-        runnable = true;
-        startDraw.start();
-
-    }
-
-    // to stop the application
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        runnable = false;
-    }
-
-    public void setGraph(int data) {
-        for (int i = 0; i < values.length - 1; i++) {
-            values[i] = values[i + 1];
-        }
-
-        values[values.length - 1] = (float) data;
-        graph.removeView(graphView);
-        graph.addView(graphView);
-    }
-
-    public Handler handler = new Handler() {
-        @Override
-        public void handleMessage(android.os.Message message) {
-            switch (message.what) {
-
-                case 0x01:
-                    int axisVal = (int) (Math.random() * 500) + 1;
-                    setGraph(axisVal);
-                    break;
-            }
-        }
-    };
-    
-    public Thread startDraw = new Thread() {
-        @Override
-        public void run() {
-            while (runnable) {
-                handler.sendEmptyMessage(0x01);
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            public void onCheckedChanged(RadioGroup radioGroup, int in) {
+                View radioBtn = radioGroup.findViewById(in);
+                int flag = radioGroup.indexOfChild(radioBtn);
+                switch (flag) {
+                    case 0:
+                        break;
+                    default:
+                        break;
                 }
             }
+        });
+
+        FrameLayout graphVisualizer = (FrameLayout)findViewById(R.id.visualizer);
+        graphPlotValues = new float[50];
+        String[] labelHorizontal = new String[]{"100", "200", "300", "400", "500"};
+        String[] labelVertical = new String[]{"100", "200", "300", "400", "500"};
+        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the Team4", labelHorizontal, labelVertical, true);
+        graphVisualizer.addView(graphDisplay);
+    }
+
+    //This method has a switch between the Run and Stop buttons
+    //@autgor Manisha Miriyala
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.runBtn:
+                onClickRun();
+                break;
+            case R.id.stopBtn:
+                onClickStop();
+                break;
+            default:
         }
+    }
 
-    };
+    //This method takes care of the logic of the Run button
+    //@ Manisha Miriyala
+    private void onClickRun(){
+        dataGeneration();
+        Toast.makeText(this, "Graph Started", Toast.LENGTH_SHORT).show();
+    }
+    //This method takes care of the logic of the Stop button
+    //@author Sakshi Gautam
+    private void onClickStop(){
+        clearView();
+        Toast.makeText(this, "Graph Stopped", Toast.LENGTH_SHORT).show();
+        graphMove = false;
+
+    }
+
+    //This method clears the graph using the stop functionality
+    //@author Sakshi Gautam
+    private void clearView(){
+        graphDisplay.setValues(new float[0]);
+        graphDisplay.invalidate();
+    }
+    //This method generates the initial data for the graph
+    //@author Amanjot
+    private void dataGeneration(){
+        if (graphMove) {
+            graphControlHandler.removeCallbacks(runnableGraph);
+            graphPlotValues = new float[0];
+            plotRefresh = 50;
+        }
+        runnableGraph = new MyRunnable();
+        graphMove = true;
+        graphControlHandler.post(runnableGraph);
+
+    }
+    //This method ensures the graph is moving using runnable
+    //@author Amanjot
+    private class MyRunnable implements Runnable{
+        @Override
+        public void run() {
+            if(graphMove){
+                graphRefresh();
+                graphControlHandler.postDelayed(this, 150);
+            }
+        }
+    }
+    //This method refreshes the data when the run button is called again
+    //@author Narendra Mohan Murali Mohan
+    private void refreshData(){
+        Random randomData = new Random();
+        final int N = 50;
+        float[] val = new float[N];
+        final int minimum_Step_Value = 2;
+        final int maximum_start_value = 10;
+        if(graphPlotValues == null || graphPlotValues.length == 0){
+            // Initializing
+            for(int i = 0; i < N - 1; i++){
+                val[i] = randomData.nextInt(minimum_Step_Value);
+            }
+            val[N - 1] = randomData.nextInt(minimum_Step_Value) + maximum_start_value;
+        }else{
+
+            final int increment_value = 5;
+            for(int i = 0; i < N - increment_value; i++){
+                val[i] = graphPlotValues[i + increment_value];
+            }
+            for(int i = N - increment_value; i< N - 1; i++){
+                val[i] = randomData.nextInt(minimum_Step_Value);
+            }
+            if(plotRefresh % interval == 0){
+                val[N - 1] = randomData.nextInt(minimum_Step_Value) + maximum_start_value;
+                plotRefresh = 0;
+            }else{
+                val[N - 1] = randomData.nextInt(1);
+            }
+        }
+        graphPlotValues = val;
+        plotRefresh++;
+    }
+
+    //This method refreshes the graph after if run is pressed multiple times
+    //@author Narendra Mohan Murali Mohan
+    private void graphRefresh(){
+        refreshData();
+        graphDisplay.setValues(graphPlotValues);
+        graphDisplay.invalidate();
+    }
 }
-
