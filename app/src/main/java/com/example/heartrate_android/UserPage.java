@@ -24,6 +24,7 @@ public class UserPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         Button btn2 = (Button) findViewById(R.id.button);
+        this.getApplicationContext();
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,7 +38,7 @@ public class UserPage extends AppCompatActivity {
         final UploadToServer upload = new UploadToServer();
 
         // SET THE FILE NAME HERE FROM NARENDRA
-        final String filename = "";
+        final String filename = "patientDB_team4.db";
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -38,7 +38,6 @@ public class UploadToServer {
         }
         else {
             FileInputStream fileInputStream = new FileInputStream(sourceFile);
-            dos = new DataOutputStream(conn.getOutputStream());
             try {
                 URL url = new URL(upLoadServerUri);
 
@@ -53,6 +52,7 @@ public class UploadToServer {
                 conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
                 conn.setRequestProperty("uploaded_file", sourceFile.getPath());
 
+                dos = new DataOutputStream(conn.getOutputStream());
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
                         + sourceFile.getPath() + "\"" + lineEnd);
