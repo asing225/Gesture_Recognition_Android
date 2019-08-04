@@ -4,28 +4,43 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/pageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="161dp"
+        android:text="This is second page" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="This is second page"
-            android:id="@+id/pageText"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="161dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/uploadButton"
+        android:text="Upload to server" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Previous Screen"
-            android:id="@+id/button"
-            android:layout_below="@+id/pageText"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="101dp" />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pageText"
+        android:layout_marginTop="27dp"
+        android:text="Previous Screen" />
 
-    </RelativeLayout>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/messageText"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        />
+
+    <Button
+        android:id="@+id/download"
+        android:layout_width="142dp"
+        android:layout_height="wrap_content"
+        android:text="Download" />
+
 </LinearLayout>
