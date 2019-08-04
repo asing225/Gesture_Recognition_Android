@@ -33,6 +33,7 @@ public class UserPage extends AppCompatActivity {
         });
 
         Button uploadButton = (Button)findViewById(R.id.uploadButton);
+        messageText = findViewById(R.id.messageText);
         final UploadToServer upload = new UploadToServer();
 
         // SET THE FILE NAME HERE FROM NARENDRA
@@ -59,13 +60,24 @@ public class UserPage extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         if(result == 1){
-                            messageText.setText("Upload Complete.");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    messageText.setText("Upload Complete.");
+                                }
+                            });
                         }
                         else if(result == 0){
-                            messageText.setText("There was some error uploading file. Please try again.");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    messageText.setText("There was some error uploading file. Please try again.");
+                                }
+                            });
                         }
                     }
                 }).start();
+                dialog.dismiss();
             }
         });
     }
