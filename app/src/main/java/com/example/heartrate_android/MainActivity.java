@@ -84,7 +84,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 NewUserContact nc = new NewUserContact();
                 nc.createDB();
-                
+
             }
         });
 
