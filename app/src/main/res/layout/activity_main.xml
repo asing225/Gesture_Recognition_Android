@@ -171,7 +171,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:text="Next Page" />
+        android:text="Next Page"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout3"

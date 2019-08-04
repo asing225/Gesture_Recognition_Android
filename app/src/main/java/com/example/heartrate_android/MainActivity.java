@@ -1,14 +1,21 @@
 package com.example.heartrate_android;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import java.util.Random;
 
 
@@ -18,6 +25,7 @@ import java.util.Random;
  * and graph is plotted displaying their heart rate
  */
 public class MainActivity extends Activity implements View.OnClickListener {
+
     private GraphView graphDisplay;
     private float[] graphPlotValues;
     private boolean graphMove = true;
@@ -25,6 +33,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private int plotRefresh = 0;
     private MyRunnable runnableGraph;
     private final int interval = 8;
+
+
+    SQLiteDatabase db;
+    Context context;
+    UserDBHelper userDBHelper;
+    String Name;
+    String ID;
+    String Age;
+    String Gender;
+    String Table_Name;
+
+
 
     //This part handles the button backend (Event handlers) and Data Initialization for Graph
     //@author Narendra Mohan Murali Mohan and Amanjot Singh
@@ -36,12 +56,35 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.stopBtn).setOnClickListener(this);
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
 
+        EditText ID_text = (EditText) findViewById(R.id.et_patientid);
+        ID = ID_text.toString();
+        EditText Age_Text = (EditText) findViewById((R.id.et_age));
+        Age = Age_Text.toString();
+        EditText Name_Text = (EditText) findViewById(R.id.et_patientName);
+        Name = Name_Text.toString();
+        RadioButton male = (RadioButton) findViewById(R.id.btn_male);
+        RadioButton female = (RadioButton) findViewById((R.id.btn_female));
+
+        if(male.isChecked()){
+            Gender = male.toString();
+        }
+
+        else{
+            Gender = female.toString();
+        }
+
+        Table_Name = Name + ID + Age + Gender;
+
         Button SecondPageButton = (Button)findViewById(R.id.nextPagebutton);
         SecondPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, UserPage.class);
                 startActivity(intent);
+
+                NewUserContact nc = new NewUserContact();
+                nc.createDB();
+                
             }
         });
 
