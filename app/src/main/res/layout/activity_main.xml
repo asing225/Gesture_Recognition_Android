@@ -41,17 +41,18 @@
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/et_patientid"
+                    android:id="@+id/et_patientId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:hint="ID"
-
                     android:inputType="number"
                     android:maxLength="11"
                     android:textColor="#333333"
                     android:textColorHint="#eeeeee"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:imeOptions="actionSend"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -75,12 +76,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:hint="Age"
-
                     android:inputType="number"
                     android:maxLength="3"
                     android:textColor="#333333"
                     android:textColorHint="#eeeeee"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:imeOptions="actionSend"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -99,7 +101,7 @@
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/et_patientName"
+                    android:id="@+id/patientName"
                     android:layout_width="108dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -109,7 +111,8 @@
                     android:maxLength="50"
                     android:textColor="#333333"
                     android:textColorHint="#eeeeee"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:imeOptions="actionSend"/>
             </LinearLayout>
 
             <LinearLayout
@@ -164,18 +167,31 @@
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/nextPagebutton"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:text="Next Page" />
+        android:layout_height="77dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/uploadToDB"
+            android:layout_width="187dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Create User" />
+
+        <Button
+            android:id="@+id/nextPagebutton"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="Start Accelerometer" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -187,7 +203,7 @@
 
         <Button
             android:id="@+id/runBtn"
-            android:layout_width="54dp"
+            android:layout_width="49dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="20dp"
@@ -197,7 +213,7 @@
 
         <Button
             android:id="@+id/stopBtn"
-            android:layout_width="66dp"
+            android:layout_width="44dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="50dp"
