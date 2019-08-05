@@ -35,9 +35,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private final int interval = 8;
 
 
-    SQLiteDatabase db;
-    Context context;
-    UserDBHelper userDBHelper;
+
     String Name;
     String ID;
     String Age;
@@ -56,25 +54,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.stopBtn).setOnClickListener(this);
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
 
-        EditText ID_text = (EditText) findViewById(R.id.et_patientid);
-        ID = ID_text.toString();
-        EditText Age_Text = (EditText) findViewById((R.id.et_age));
-        Age = Age_Text.toString();
-        EditText Name_Text = (EditText) findViewById(R.id.et_patientName);
-        Name = Name_Text.toString();
-        RadioButton male = (RadioButton) findViewById(R.id.btn_male);
-        RadioButton female = (RadioButton) findViewById((R.id.btn_female));
-
-        if(male.isChecked()){
-            Gender = male.toString();
-        }
-
-        else{
-            Gender = female.toString();
-        }
-
-        Table_Name = Name + ID + Age + Gender;
-
         Button SecondPageButton = (Button)findViewById(R.id.nextPagebutton);
         SecondPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,8 +61,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Intent intent = new Intent(MainActivity.this, UserPage.class);
                 startActivity(intent);
 
-                NewUserContact nc = new NewUserContact();
-                nc.createDB();
 
             }
         });

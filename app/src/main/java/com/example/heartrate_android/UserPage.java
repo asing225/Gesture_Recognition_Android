@@ -28,7 +28,6 @@ import service.UploadToServer;
 public class UserPage extends AppCompatActivity {
 
     private static final int PERMISSION_STORAGE_CODE = 1000 ;
-   // private String sdCardFilePath = "/Android/Data/CSE535_ASSIGNMENT2_DOWN";
     ProgressDialog dialog = null;
     TextView messageText = null;
 
@@ -45,9 +44,11 @@ public class UserPage extends AppCompatActivity {
             }
         });
 
+
         Button uploadButton = (Button)findViewById(R.id.uploadButton);
         messageText = findViewById(R.id.messageText);
         final UploadToServer upload = new UploadToServer();
+        final DownloadFromServer download= new DownloadFromServer(this);
 
         // SET THE FILE NAME HERE FROM NARENDRA
         final String filename = "";
@@ -96,11 +97,12 @@ public class UserPage extends AppCompatActivity {
 
         Button download_Button = (Button)findViewById((R.id.download));
 
+
         download_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //DownloadFromServer dfs = new DownloadFromServer();
+
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                     if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
                             String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -108,65 +110,19 @@ public class UserPage extends AppCompatActivity {
                     }
 
                     else{
-                        startDownloading();
-                        //dfs.doInBackground();
+                        download.startDownloading();
+
                     }
                 }
 
                 else{
-                    startDownloading();
-                    //dfs.doInBackground();
+                    download.startDownloading();
+
                 }
             }
         });
-    }
-
-    private void startDownloading() {
-
-        //String url = "http://impact.asu.edu/CSE535Spring19Folder/UploadToServer.php";
-        String url = "http://tamilfreemp3s.com/down.php?file=Tamil%202019%20Songs/Maari%202/128/Rowdy%20Baby.mp3";
-        String path = "sdcard/Android/data/CSE535_ASSIGNMENT2_DOWN";
-
-        File direct = new File(Environment.getExternalStorageDirectory() +
-                "Android/data/CSE535_ASSIGNMENT2_DOWN");
-
-        if (!direct.exists()) {
-            direct.mkdirs();
-        }
-
-        else
-            Log.d("error","dir exists");
-
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
-                DownloadManager.Request.NETWORK_MOBILE);
-        request.setTitle("Download");
-        request.setDescription("Downloading File.....");
-        request.allowScanningByMediaScanner();
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir("Android/data/CSE535_ASSIGNMENT2_DOWN","test.mp3");
-       // request.setDestinationUri(Uri.parse("file://" + path + "/rowdy_baby.mp3"));
-//        request.setDestinationUri(Uri.parse(Uri.fromFile(
-//                Environment.getExternalStorageDirectory()).toString()
-//                + File.separator +"Android/data/CSE535_ASSIGNMENT2_DOWN"));
-        DownloadManager manager = (DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);
-        manager.enqueue(request);
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch(requestCode){
-            case PERMISSION_STORAGE_CODE:{
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    startDownloading();
-                }
-                else{
-                    Toast.makeText(this, "Permission denied...!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
 }
 
