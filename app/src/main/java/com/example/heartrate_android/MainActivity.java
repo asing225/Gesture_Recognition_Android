@@ -1,8 +1,10 @@
 package com.example.heartrate_android;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -13,10 +15,17 @@ import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import androidx.core.app.ActivityCompat;
+
+import java.io.File;
+
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+
 import java.util.Random;
+
+import service.DBConnection;
 
 
 /**
@@ -35,15 +44,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private final int interval = 8;
 
 
+    private EditText patientID;
+    private EditText age;
+    private EditText name;
+    private RadioGroup radioGroup;
 
-    String Name;
-    String ID;
-    String Age;
-    String Gender;
-    String Table_Name;
+    private String idText;
+    private String ageText;
+    private String nameText;
+    private String sex;
+    private String tableName;
 
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
-
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
     //This part handles the button backend (Event handlers) and Data Initialization for Graph
     //@author Narendra Mohan Murali Mohan and Amanjot Singh
     @Override
@@ -52,19 +69,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         findViewById(R.id.runBtn).setOnClickListener(this);
         findViewById(R.id.stopBtn).setOnClickListener(this);
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
 
-        Button SecondPageButton = (Button)findViewById(R.id.nextPagebutton);
-        SecondPageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UserPage.class);
-                startActivity(intent);
-
-
-            }
-        });
-
+        patientID = (EditText) findViewById(R.id.et_patientId);
+        age = (EditText) findViewById(R.id.et_age);
+        name = (EditText) findViewById(R.id.patientName);
+        radioGroup = (RadioGroup) findViewById(R.id.radio_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int in) {
@@ -72,10 +81,62 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 int flag = radioGroup.indexOfChild(radioBtn);
                 switch (flag) {
                     case 0:
+                        sex = "male";
                         break;
-                    default:
+                    case 1:
+                        sex = "female";
                         break;
                 }
+            }
+        });
+
+        final DBConnection conn = new DBConnection();
+        Button createDBButton = (Button) findViewById(R.id.uploadToDB);
+        Context appContext = this.getApplicationContext();
+        verifyStoragePermissions(this);
+        createDBButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idText = patientID.getText().toString();
+                ageText = age.getText().toString();
+                nameText = name.getText().toString();
+                tableName = nameText + "_" + idText + "_" + ageText + "_" + sex;
+                if(!idText.equals("")){
+                    if(!ageText.equals("")){
+                        if(!nameText.equals("")){
+                            if(sex != null){
+                                try{
+                                    conn.createDB(tableName, new File(Environment.getExternalStorageDirectory().toString() + "/Android/data" ));//appContext.getExternalFilesDir(""));
+                                }
+                                catch(Exception e){
+                                    Toast.makeText(MainActivity.this, "Error occurred while creating DB"
+                                            , Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            else{
+                                Toast.makeText(MainActivity.this, "Please choose a Sex", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "Please enter a Name", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    else{
+                        Toast.makeText(MainActivity.this, "Please enter a Age", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Please enter an ID", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        Button secondPageButton = (Button)findViewById(R.id.nextPagebutton);
+        secondPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UserPage.class);
+                startActivity(intent);
             }
         });
 
@@ -187,5 +248,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
         refreshData();
         graphDisplay.setValues(graphPlotValues);
         graphDisplay.invalidate();
+    }
+
+    //this method will ask for user permissions for read/write
+    //@author Amanjot Singh
+    public static void verifyStoragePermissions(Activity activity){
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(permission != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
     }
 }
