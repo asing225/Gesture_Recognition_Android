@@ -14,6 +14,7 @@ public class UploadToServer {
 
     private String upLoadServerUri = "http://impact.asu.edu/CSE535Spring19Folder/UploadToServer.php";
     //private String upLoadServerUri = "Library/WebServer/Documents/UploadToServer.php";
+
     private String sdCardFilePath = "/Android/Data/CSE535_ASSIGNMENT2/";
 
     public File getFileFromSDCard(String filename){
@@ -52,6 +53,7 @@ public class UploadToServer {
                 conn.setRequestProperty("ENCTYPE", "multipart/form-data");
                 conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
                 conn.setRequestProperty("uploaded_file", sourceFile.getPath());
+
                 //System.setProperty("http.proxyHost", "//Library/WebServer/Documents/UploadToServer.php");
                 System.setProperty("http.proxyHost", "http://impact.asu.edu/CSE535Spring19Folder/UploadToServer.php");
                 System.setProperty("http.proxyPort", "8080");
@@ -59,6 +61,7 @@ public class UploadToServer {
                 dos = new DataOutputStream(conn.getOutputStream());
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=patientDB_team4.db" + lineEnd);
+
 
                 dos.writeBytes(lineEnd);
 

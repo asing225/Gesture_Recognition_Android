@@ -12,12 +12,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
 import androidx.core.app.ActivityCompat;
 
 import java.io.File;
+
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+
 import java.util.Random;
 
 import service.DBConnection;
@@ -38,6 +43,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private MyRunnable runnableGraph;
     private final int interval = 8;
 
+
     private EditText patientID;
     private EditText age;
     private EditText name;
@@ -55,7 +61,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     };
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
-
     //This part handles the button backend (Event handlers) and Data Initialization for Graph
     //@author Narendra Mohan Murali Mohan and Amanjot Singh
     @Override
@@ -64,11 +69,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         findViewById(R.id.runBtn).setOnClickListener(this);
         findViewById(R.id.stopBtn).setOnClickListener(this);
+
         patientID = (EditText) findViewById(R.id.et_patientId);
         age = (EditText) findViewById(R.id.et_age);
         name = (EditText) findViewById(R.id.patientName);
         radioGroup = (RadioGroup) findViewById(R.id.radio_group);
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int in) {
