@@ -28,15 +28,18 @@ public class DownloadFromServer extends UserPage {
     public void startDownloading() {
 
         String url = "http://impact.asu.edu/CSE535Spring19Folder/UploadToServer.php";
-        File direct = new File(Environment.getExternalStorageDirectory() +
-                "Android/data/CSE535_ASSIGNMENT2_DOWN");
+        String path = "/Android/data/CSE535_ASSIGNMENT2_DOWN";
+        File sdCard = Environment.getExternalStorageDirectory();
+        File downloadFile = new File(sdCard,path);
 
-        if (!direct.exists()) {
-            direct.mkdirs();
+        if (!downloadFile.exists()) {
+            downloadFile.mkdirs();
         }
 
         else
             Log.d("error","dir exists");
+
+
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
@@ -45,7 +48,7 @@ public class DownloadFromServer extends UserPage {
         request.setDescription("Downloading File.....");
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir("Android/data/CSE535_ASSIGNMENT2_DOWN","test.db");
+        request.setDestinationInExternalPublicDir(path,"test.db");
         DownloadManager manager = (DownloadManager) context.getSystemService(context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
 
