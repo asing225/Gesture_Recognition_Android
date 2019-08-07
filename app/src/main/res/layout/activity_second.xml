@@ -2,23 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#A9A9A9"
     android:weightSum="1">
 
-    <TextView
-        android:id="@+id/pageText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="161dp"
-        android:text="This is second page" />
-
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/download"
+        android:layout_width="142dp"
         android:layout_height="wrap_content"
-        android:id="@+id/uploadButton"
-        android:text="Upload to server" />
+        android:text="Download" />
 
     <Button
         android:id="@+id/button"
@@ -28,18 +19,34 @@
         android:layout_marginTop="27dp"
         android:text="Previous Screen" />
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/messageText"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        />
     <Button
-        android:id="@+id/download"
-        android:layout_width="142dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Download" />
+        android:id="@+id/uploadButton"
+        android:text="Upload to server" />
+
+    <FrameLayout
+        android:id="@+id/visualizer1"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/visualizer2"
+        android:layout_width="match_parent"
+        android:layout_height="133dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/visualizer3"
+        android:layout_width="match_parent"
+        android:layout_height="321dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
 
 </LinearLayout>
