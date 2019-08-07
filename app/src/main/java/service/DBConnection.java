@@ -31,13 +31,12 @@ public class DBConnection   {
     //initialize the database
     private SQLiteDatabase dbUser = null;
 
-
     public void createDB(String tableName, File sdCardFile ){
         String filePath = Environment.getExternalStorageDirectory().toString()
                 + "/Android/Data/CSE535_ASSIGNMENT2";
         File file = new File(filePath);
         //SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(sdCardFile+"/patientDB_team4.db", null);
-        dbUser.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        //dbUser.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 
         file.mkdirs();
         //File file = new File(folder, "patientDB_team4.db");

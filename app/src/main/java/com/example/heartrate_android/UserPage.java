@@ -56,20 +56,20 @@ public class UserPage extends AppCompatActivity {
         messageText = findViewById(R.id.messageText);
         final UploadToServer upload = new UploadToServer();
 
-
-
-        Button accelerometer =(Button)findViewById(R.id.nextPagebutton);
         // SET THE FILE NAME HERE FROM NARENDRA
         final String filename = "patientDB_team4.db";
+
+       /* Button accelerometer =(Button)findViewById(R.id.nextPagebutton);
+
 
         accelerometer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
 
         }
-        });
+        });*/
 
-        final String filename = "patientDB_team4.db";
+        //final String filename = "patientDB_team4.db";
 
         final DownloadFromServer download= new DownloadFromServer(this);
 

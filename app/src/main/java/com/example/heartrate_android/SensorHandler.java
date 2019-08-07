@@ -21,7 +21,7 @@ public class SensorHandler extends Service implements SensorEventListener{
     static String titleDB="ID_AGE_NAME_SEX";
     private SensorManager handleSensor;
     private Sensor acc;
-    private int sample_rate = 1000000;  // 1 sec
+    private int sample_rate = 1000000;
     private String user = "";
     public static String LOG_TAG = "SensorListenerService";
     private long timeStamp;
