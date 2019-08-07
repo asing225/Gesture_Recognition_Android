@@ -48,17 +48,17 @@ public class UserPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        Button btn2 = (Button) findViewById(R.id.button);
-        this.getApplicationContext();
-
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent previousPage = new Intent(UserPage.this, MainActivity.class);
-                startActivity(previousPage);
-            }
-
-        });
+//        Button btn2 = (Button) findViewById(R.id.button);
+//        this.getApplicationContext();
+//
+//        btn2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent previousPage = new Intent(UserPage.this, MainActivity.class);
+//                startActivity(previousPage);
+//            }
+//
+//        });
 
         FrameLayout graphVisualizer = (FrameLayout)findViewById(R.id.visualizer1);
         graphPlotValues = new float[50];

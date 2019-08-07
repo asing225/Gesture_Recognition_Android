@@ -1,37 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#A9A9A9"
+    android:orientation="vertical"
     android:weightSum="1">
 
     <Button
         android:id="@+id/download"
-        android:layout_width="142dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
         android:text="Download" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/pageText"
-        android:layout_marginTop="27dp"
-        android:text="Previous Screen" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/uploadButton"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
         android:text="Upload to server" />
 
     <FrameLayout
         android:id="@+id/visualizer1"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_weight="1">
-
-    </FrameLayout>
+        android:layout_height="97dp"
+        android:layout_weight="1"/>
 
     <FrameLayout
         android:id="@+id/visualizer2"
