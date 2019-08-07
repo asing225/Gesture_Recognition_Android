@@ -15,29 +15,31 @@ public class UserPatient {
         this.UserZVal = zval;
 
     }
-    // properties
+    // setters and getters
     public void setTimestamp(long timeStamp) {
         this.UserTimeStamp = timeStamp;
+    }
+    public void setXVal(float x) {
+        this.UserXVal = x;
+    }
+    public void setYVal(float y) {
+        this.UserYVal = y;
+    }
+
+    public void setZVal(float z) {
+        this.UserZVal = z;
     }
     public long getTimestamp() {
         return this.UserTimeStamp;
     }
-    public void setXValues(float x) {
-        this.UserXVal = x;
-    }
-    public float getXValues() {
+
+    public float getXVal() {
         return this.UserXVal;
     }
-    public void setYValues(float y) {
-        this.UserYVal = y;
-    }
-    public float getYValues() {
+    public float getYVal() {
         return this.UserYVal;
     }
-    public void setZValues(float z) {
-        this.UserZVal = z;
-    }
-    public float getZValues() {
+    public float getZVal() {
         return this.UserZVal;
     }
 }

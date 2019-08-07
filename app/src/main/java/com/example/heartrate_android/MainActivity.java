@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Random;
 
 import service.DBConnection;
@@ -48,6 +49,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private String nameText;
     private String sex;
     private String tableName;
+    float[] xVals = new float[10];
+    float[] yVals = new float[10];
+    float[] zVals = new float[10];
+
+    // Used to plot 10 datapoints
+    float[] X_ARRAY = new float[10];
+    float[] Y_ARRAY = new float[10];
+    float[] Z_ARRAY = new float[10];
+    private final Handler handler_obj = new Handler();
+    private Runnable runnable_obj;
+    private DBConnection dbHandler= new DBConnection();
+    int num_data_points = 10;
+    int min_index = 0;
+    int max_index = num_data_points - 1;
+
+    // Set this to 1000 to update graph every second
+    int delay_val = 100;
+    // Grab sensor data from SensorlistenerService class for plotting
+    static float X, Y, Z;
+
+    static void set_sensor_vals(float x, float y, float z) {
+        X = x;
+        Y = y;
+        Z = z;
+    }
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -64,6 +90,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         findViewById(R.id.runBtn).setOnClickListener(this);
         findViewById(R.id.stopBtn).setOnClickListener(this);
+
+
         patientID = (EditText) findViewById(R.id.et_patientId);
         age = (EditText) findViewById(R.id.et_age);
         name = (EditText) findViewById(R.id.patientName);
@@ -136,10 +164,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
         });
 
         FrameLayout graphVisualizer = (FrameLayout)findViewById(R.id.visualizer);
-        graphPlotValues = new float[50];
-        String[] labelHorizontal = new String[]{"100", "200", "300", "400", "500"};
+        graphPlotValues = xVals;
+        String[] labelHorizontal =new String[]{"10", "20", "30", "40", "50"};
         String[] labelVertical = new String[]{"100", "200", "300", "400", "500"};
-        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the Team4", labelHorizontal, labelVertical, true);
+        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the X", labelHorizontal, labelVertical, true);
+        graphVisualizer.addView(graphDisplay);
+        graphPlotValues = yVals;
+        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the Y", labelHorizontal, labelVertical, true);
+        graphVisualizer.addView(graphDisplay);
+        graphPlotValues = zVals;
+        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the Z", labelHorizontal, labelVertical, true);
         graphVisualizer.addView(graphDisplay);
     }
 
@@ -192,6 +226,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         graphControlHandler.post(runnableGraph);
 
     }
+
+
     //This method ensures the graph is moving using runnable
     //@author Amanjot
     private class MyRunnable implements Runnable{
