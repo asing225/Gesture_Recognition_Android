@@ -1,3 +1,4 @@
+
 package com.example.heartrate_android;
 
 import android.Manifest;
@@ -262,4 +263,5 @@ public class MainActivity extends Activity implements View.OnClickListener {
             );
         }
     }
+
 }
