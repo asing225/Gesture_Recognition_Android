@@ -1,33 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#A9A9A9"
     android:orientation="vertical"
     android:weightSum="1">
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:ignore="DuplicateIds">
 
-    <Button
-        android:id="@+id/download"
-        android:layout_width="match_parent"
-        android:layout_height="34dp"
-        android:text="Download" />
+        <Button
+            android:id="@+id/download"
+            android:layout_width="186dp"
+            android:layout_height="34dp"
+            android:text="Download" />
 
-    <Button
-        android:id="@+id/uploadButton"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:text="Upload to server" />
+        <Button
+            android:id="@+id/uploadButton"
+            android:layout_width="201dp"
+            android:layout_height="36dp"
+            android:text="Upload to server" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <Button
+            android:id="@+id/runBtn"
+            android:layout_width="49dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="#4CAF50"
+            android:text="Run"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="40dp" />
+
+        <Button
+            android:id="@+id/stopBtn"
+            android:layout_width="44dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="1"
+            android:background="#F44336"
+            android:text="Stop"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="40dp" />
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/visualizer1"
         android:layout_width="match_parent"
-        android:layout_height="97dp"
-        android:layout_weight="1"/>
+        android:layout_height="389dp"
+        android:layout_weight="1" />
 
     <FrameLayout
         android:id="@+id/visualizer2"
         android:layout_width="match_parent"
-        android:layout_height="133dp"
+        android:layout_height="213dp"
         android:layout_weight="1">
 
     </FrameLayout>
@@ -35,7 +87,7 @@
     <FrameLayout
         android:id="@+id/visualizer3"
         android:layout_width="match_parent"
-        android:layout_height="321dp"
+        android:layout_height="225dp"
         android:layout_weight="1">
 
     </FrameLayout>

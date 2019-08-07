@@ -48,17 +48,19 @@ public class UserPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-//        Button btn2 = (Button) findViewById(R.id.button);
-//        this.getApplicationContext();
-//
-//        btn2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent previousPage = new Intent(UserPage.this, MainActivity.class);
-//                startActivity(previousPage);
-//            }
-//
-//        });
+        Button runBtn =(Button)findViewById(R.id.runBtn);
+        runBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                onClickRun();
+            }
+
+            private void onClickRun() {
+                Toast.makeText(getApplicationContext(), "Hi there, you clicked run button", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //findViewById(R.id.runBtn).setOnClickListener(this);
+        //findViewById(R.id.stopBtn).setOnClickListener(this);
 
         FrameLayout graphVisualizer = (FrameLayout)findViewById(R.id.visualizer1);
         graphPlotValues = new float[50];
