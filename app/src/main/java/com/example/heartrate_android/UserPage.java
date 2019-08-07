@@ -15,9 +15,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +33,13 @@ import service.DownloadFromServer;
 import service.UploadToServer;
 
 public class UserPage extends AppCompatActivity {
-
+    private GraphView graphDisplay;
+    private float[] graphPlotValues;
+    private boolean graphMove = true;
+    private Handler graphControlHandler = new Handler();
+    private int plotRefresh = 0;
+    private MainActivity.MyRunnable runnableGraph;
+    private final int interval = 8;
     private static final int PERMISSION_STORAGE_CODE = 1000 ;
     ProgressDialog dialog = null;
     TextView messageText = null;
@@ -49,12 +57,34 @@ public class UserPage extends AppCompatActivity {
                 Intent previousPage = new Intent(UserPage.this, MainActivity.class);
                 startActivity(previousPage);
             }
+
         });
 
-
+        FrameLayout graphVisualizer = (FrameLayout)findViewById(R.id.visualizer1);
+        graphPlotValues = new float[50];
+        String[] labelHorizontal = new String[]{"100", "200", "300", "400", "500"};
+        String[] labelVertical = new String[]{"100", "200", "300", "400", "500"};
+        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the Team4", labelHorizontal, labelVertical, true);
+        graphVisualizer.addView(graphDisplay);
         Button uploadButton = (Button)findViewById(R.id.uploadButton);
-        messageText = findViewById(R.id.messageText);
+
         final UploadToServer upload = new UploadToServer();
+
+        FrameLayout graphVisualizer1 = (FrameLayout)findViewById(R.id.visualizer2);
+        graphPlotValues = new float[50];
+        String[] labelHorizontal1 = new String[]{"100", "200", "300", "400", "500"};
+        String[] labelVertical1 = new String[]{"100", "200", "300", "400", "500"};
+        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the Team4", labelHorizontal, labelVertical, true);
+        graphVisualizer1.addView(graphDisplay);
+
+
+        FrameLayout graphVisualizer2 = (FrameLayout)findViewById(R.id.visualizer3);
+        graphPlotValues = new float[50];
+        String[] labelHorizontal2 = new String[]{"100", "200", "300", "400", "500"};
+        String[] labelVertical2 = new String[]{"100", "200", "300", "400", "500"};
+        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the Team4", labelHorizontal, labelVertical, true);
+        graphVisualizer2.addView(graphDisplay);
+
 
         // SET THE FILE NAME HERE FROM NARENDRA
         final String filename = "patientDB_team4.db";

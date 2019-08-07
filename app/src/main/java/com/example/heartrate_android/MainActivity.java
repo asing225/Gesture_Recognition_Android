@@ -200,7 +200,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
     //This method ensures the graph is moving using runnable
     //@author Amanjot
-    private class MyRunnable implements Runnable{
+    public class MyRunnable implements Runnable{
         @Override
         public void run() {
             if(graphMove){
