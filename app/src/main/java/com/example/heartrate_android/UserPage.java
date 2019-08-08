@@ -3,8 +3,13 @@ package com.example.heartrate_android;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,16 +47,33 @@ public class UserPage extends AppCompatActivity {
     ProgressDialog dialog = null;
     TextView messageText = null;
     List<UserPatient> patientValues;
+
+    private float x,y,z = (float) 0.0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         DBConnection dbc= new DBConnection();
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         Button runBtn =(Button)findViewById(R.id.run);
         runBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+                sensorManager.registerListener(new SensorEventListener() {
+                    @Override
+                    public void onSensorChanged(SensorEvent event) {
+                        x = event.values[0];
+                        y = event.values[1];
+                        z = event.values[2];
+                    }
 
+                    @Override
+                    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                    }
+
+                }, sensor, SensorManager.SENSOR_DELAY_FASTEST);
                 onClickRun();
             }
 
