@@ -41,7 +41,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static boolean graphMove = true;
     private static Handler graphControlHandler = new Handler();
     private static int plotRefresh = 0;
- //   public MyRunnable runnableGraph;
+    public MyRunnable runnableGraph;
     private static final int interval = 8;
 
 
@@ -195,13 +195,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
     //This method takes care of the logic of the Run button
     //@ Manisha Miriyala
     private void onClickRun(){
-       // dataGeneration();
+       dataGeneration();
         Toast.makeText(this, "Graph Started", Toast.LENGTH_SHORT).show();
     }
     //This method takes care of the logic of the Stop button
     //@author Sakshi Gautam
     private void onClickStop(){
-        //clearView();
+        clearView();
         Toast.makeText(this, "Graph Stopped", Toast.LENGTH_SHORT).show();
        // graphMove = false;
 
@@ -209,7 +209,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     //This method clears the graph using the stop functionality
     //@author Sakshi Gautam
-    /*private void clearView(){
+    private void clearView(){
         graphDisplay.setValues(new float[0]);
         graphDisplay.invalidate();
     }
@@ -277,8 +277,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         refreshData();
         graphDisplay.setValues(graphPlotValues);
         graphDisplay.invalidate();
-    }*/
-
+    }
     //this method will ask for user permissions for read/write
     //@author Amanjot Singh
     public static void verifyStoragePermissions(Activity activity){

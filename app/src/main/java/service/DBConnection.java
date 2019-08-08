@@ -44,9 +44,9 @@ public class DBConnection   {
         try{
             dbUser.execSQL("create table "+ tableName +" ("
                     + " timestamp DATETIME , "
-                    + " xvalue FLOAT , "
-                    + " yvalue FLOAT, "
-                    + " zvalue FLOAT ); " );
+                    + " xvalue REAL NOT NULL , "
+                    + " yvalue REAL NOT NULL, "
+                    + " zvalue REAL NOT NULL ); " );
             dbUser.setTransactionSuccessful();
         }
         catch(Exception e){
@@ -56,8 +56,12 @@ public class DBConnection   {
             dbUser.endTransaction();
         }
     }
+/*
 
- /*   public UserPatient getxyz(String tableName){
+    float[] xVals = new float[10];
+    float[] yVals = new float[10];
+    float[] zVals = new float[10];
+    public ArrayList<String>[]  getxyz(String tableName){
         String query = "Select * from "+ tableName+ " ORDER BY TIMESTAMP DESC limit 10";
         Cursor cursor = dbUser.rawQuery(query, null);\
         UserPatient patient = new UserPatient();
@@ -65,19 +69,30 @@ public class DBConnection   {
         int j=10;
         if (cursor.moveToFirst() ){
              do{
-                 patient.getTimestamp(Long.parseLong(cursor.getString(0)));
-                 patient.getXVal(Float.parseFloat(cursor.getString(1)));
-                 patient.getYVal(Float.parseFloat(cursor.getString(2)));
-                 patient.getZVal(Float.parseFloat(cursor.getString(3)));
+                 String x = cursor.getString(cursor.getColumnIndex("XValues"));
+                 String y = cursor.getString(cursor.getColumnIndex("YValues"));
+                 String z = cursor.getString(cursor.getColumnIndex("ZValues"));
+                 Float x = Float.parseFloat(x);
+                 Float y = Float.parseFloat(y);
+                 Float z = Float.parseFloat(z);
+                 xVals[j] = x;
+                 yVals[j] = y;
+                 zVals[j] = z;
+
                 }while (cursor.moveToNext());
-            }
+            }cursor.close();
+            ArrayList<String>[] arr = new ArrayList<String>[3];
+                 arr[0] = xVals[j];
+                 arr[1] = yVals[j];
+                 arr[2] = zVals[j]
+             return arr;
+    }
 
-            cursor.close();
-            return patient;
-    }*/
+*/
 
 
-
+    //This function is used this to add entries to the database
+    //This function is used this to add entries to the database
     //This function is used this to add entries to the database
     public void addHandler(String tableName,UserPatient patient) {
         String filePath = Environment.getExternalStorageDirectory().toString()
@@ -85,13 +100,10 @@ public class DBConnection   {
         File file = new File(filePath);
         SQLiteDatabase dbUser = SQLiteDatabase.openOrCreateDatabase(file+"/patientDB_team4.db", null);
         dbUser.beginTransaction();
-        ContentValues datapoints = new ContentValues();
-        datapoints.put(TIMESTAMPCOL, patient.getTimestamp());
-        datapoints.put(XCOL, patient.getXVal());
-        datapoints.put(YCOL, patient.getYVal());
-        datapoints.put(ZCOL, patient.getZVal());
-        dbUser.insert(tableName, null, datapoints);
+        dbUser.execSQL("INSERT INTO " + tableName + " VALUES (" + patient.getTimestamp()
+                + "," + patient.getXVal() + "," + patient.getYVal() + "," + patient.getZVal() + ");");
         dbUser.endTransaction();
+        dbUser.close();
     }
     //This function is use this to check if a timestamp already exists in the database.
     public UserPatient findHandler(long timestamp) {
@@ -120,7 +132,7 @@ public class DBConnection   {
         Cursor cursor = dbUser.rawQuery(query, null);
         List<UserPatient> patient = new ArrayList();
 
-        while (cursor!=null) {
+        while (cursor!=null && cursor.moveToFirst()) {
             cursor.moveToFirst();
             UserPatient patientObj = new UserPatient(Long.parseLong(cursor.getString(0)), Float.parseFloat(cursor.getString(1)), Float.parseFloat(cursor.getString(2))
                     , Float.parseFloat(cursor.getString(3)));

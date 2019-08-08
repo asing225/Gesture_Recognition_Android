@@ -87,12 +87,11 @@ public class UserPage extends AppCompatActivity {
         runBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-
                 onClickRun();
             }
 
             private void onClickRun() {
-                //dataGeneration();
+                dataGeneration();
                 //tname = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
                 patientValues= dbc.getValues(tableName);
                 Toast.makeText(getApplicationContext(), "Hi there, you clicked run button", Toast.LENGTH_SHORT).show();
@@ -112,10 +111,7 @@ public class UserPage extends AppCompatActivity {
                 graphMove = false;
             }
 
-
         });
-
-
         FrameLayout graphVisualizer = (FrameLayout)findViewById(R.id.visualizer1);
         graphPlotValues = new float[50];
         String[] labelHorizontal = new String[]{"100", "200", "300", "400", "500"};
@@ -136,7 +132,6 @@ public class UserPage extends AppCompatActivity {
 
         FrameLayout graphVisualizer2 = (FrameLayout)findViewById(R.id.visualizer3);
         graphPlotValues = new float[50];
-
         String[] labelHorizontal2 = new String[]{"100", "200", "300", "400", "500"};
         String[] labelVertical2 = new String[]{"100", "200", "300", "400", "500"};
         graphDisplay2 = new GraphView(this, graphPlotValues, "GraphicView of the Team4", labelHorizontal, labelVertical, true);
@@ -145,18 +140,6 @@ public class UserPage extends AppCompatActivity {
 
         // SET THE FILE NAME HERE FROM NARENDRA
         final String filename = "patientDB_team4.db";
-
-       /* Button accelerometer =(Button)findViewById(R.id.nextPagebutton);
-
-
-        accelerometer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-
-        }
-        });*/
-
-        //final String filename = "patientDB_team4.db";
 
         final DownloadFromServer download= new DownloadFromServer(this);
 
@@ -212,7 +195,8 @@ public class UserPage extends AppCompatActivity {
         download_Button.setOnClickListener(new View.OnClickListener() {
 
             String nameOfTable = tableName;
-           // patientValues = dbc.getxyz(tableName);
+           // ArrayList<String>[] arr = new ArrayList<String>[3];
+            //arr = dbc.getxyz(tableName);
 
 
             @Override

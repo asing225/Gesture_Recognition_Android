@@ -45,7 +45,7 @@ public class DownloadFromServer extends UserPage {
         request.setDescription("Downloading File.....");
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir("Android/data/CSE535_ASSIGNMENT2_DOWN","test.db");
+        request.setDestinationInExternalPublicDir("Android/data/CSE535_ASSIGNMENT2_DOWN","patientDB_team4.db");
         DownloadManager manager = (DownloadManager) context.getSystemService(context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
 
