@@ -54,34 +54,37 @@ public class UserPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+        Intent intent = getIntent();
+        String tableName = intent.getStringExtra("tableName");
         DBConnection dbc= new DBConnection();
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                x = event.values[0];
+                y = event.values[1];
+                z = event.values[2];
+
+                UserPatient pat = new UserPatient(System.currentTimeMillis(), x, y, z);
+                dbc.addHandler(tableName, pat);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            }
+        }, sensor, SensorManager.SENSOR_DELAY_FASTEST);
         Button runBtn =(Button)findViewById(R.id.run);
         runBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                sensorManager.registerListener(new SensorEventListener() {
-                    @Override
-                    public void onSensorChanged(SensorEvent event) {
-                        x = event.values[0];
-                        y = event.values[1];
-                        z = event.values[2];
-                    }
 
-                    @Override
-                    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                    }
-
-                }, sensor, SensorManager.SENSOR_DELAY_FASTEST);
                 onClickRun();
             }
 
             private void onClickRun() {
                 //dataGeneration();
-                Intent intent = getIntent();
                 //tname = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-                String tableName = intent.getStringExtra("tableName");
                 patientValues= dbc.getValues(tableName);
                 Toast.makeText(getApplicationContext(), "Hi there, you clicked run button", Toast.LENGTH_SHORT).show();
             }
