@@ -67,6 +67,11 @@ public class UserPage extends AppCompatActivity {
                 z = event.values[2];
 
                 UserPatient pat = new UserPatient(System.currentTimeMillis(), x, y, z);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 dbc.addHandler(tableName, pat);
             }
 

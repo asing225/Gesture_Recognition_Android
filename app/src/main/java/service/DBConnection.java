@@ -23,10 +23,10 @@ public class DBConnection   {
     public static final String DATABASE_NAME = "patientDB.db";
     //public static final String DATABASE_NAME = "group17.db";
     public static String TABLE_NAME = "Name_ID_Age_Sex";
-    public static final String TIMESTAMPCOL = "Timestamp";
-    public static final String XCOL = "xVal";
-    public static final String YCOL = "yVal";
-    public static final String ZCOL = "zVal";
+    public static final String TIMESTAMPCOL = "timestamp";
+    public static final String XCOL = "xvalue";
+    public static final String YCOL = "yvalue";
+    public static final String ZCOL = "zvalue";
     //initialize the database
     private SQLiteDatabase dbUser = null;
 
@@ -44,9 +44,9 @@ public class DBConnection   {
         try{
             dbUser.execSQL("create table "+ tableName +" ("
                     + " timestamp DATETIME , "
-                    + " xvalue REAL , "
-                    + " yvalue REAL, "
-                    + " zvalue REAL ); " );
+                    + " xvalue FLOAT , "
+                    + " yvalue FLOAT, "
+                    + " zvalue FLOAT ); " );
             dbUser.setTransactionSuccessful();
         }
         catch(Exception e){
