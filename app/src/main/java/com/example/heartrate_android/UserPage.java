@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,6 +15,7 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -42,7 +45,8 @@ public class UserPage extends AppCompatActivity {
     private int plotRefresh = 0;
     public MyRunnable runnableGraph;
     private final int interval = 8;
-    MainActivity tname;
+    //MainActivity tname;
+    String tableName;
     private static final int PERMISSION_STORAGE_CODE = 1000 ;
     ProgressDialog dialog = null;
     TextView messageText = null;
@@ -55,7 +59,7 @@ public class UserPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         Intent intent = getIntent();
-        String tableName = intent.getStringExtra("tableName");
+        tableName = intent.getStringExtra("tableName");
         DBConnection dbc= new DBConnection();
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -67,11 +71,11 @@ public class UserPage extends AppCompatActivity {
                 z = event.values[2];
 
                 UserPatient pat = new UserPatient(System.currentTimeMillis(), x, y, z);
-                try {
+              /*  try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
                 dbc.addHandler(tableName, pat);
             }
 
@@ -206,8 +210,11 @@ public class UserPage extends AppCompatActivity {
 
 
         download_Button.setOnClickListener(new View.OnClickListener() {
-           // String tableName = nameText + "_" + idText + "_" + ageText + "_" + sex;
-           // String query = "Select * from "+ tableName+ " ORDER BY TIMESTAMP DESC limit 10";
+
+            String nameOfTable = tableName;
+           // patientValues = dbc.getxyz(tableName);
+
+
             @Override
             public void onClick(View view) {
 

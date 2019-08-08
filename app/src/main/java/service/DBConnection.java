@@ -57,6 +57,27 @@ public class DBConnection   {
         }
     }
 
+ /*   public UserPatient getxyz(String tableName){
+        String query = "Select * from "+ tableName+ " ORDER BY TIMESTAMP DESC limit 10";
+        Cursor cursor = dbUser.rawQuery(query, null);\
+        UserPatient patient = new UserPatient();
+        int i=0;
+        int j=10;
+        if (cursor.moveToFirst() ){
+             do{
+                 patient.getTimestamp(Long.parseLong(cursor.getString(0)));
+                 patient.getXVal(Float.parseFloat(cursor.getString(1)));
+                 patient.getYVal(Float.parseFloat(cursor.getString(2)));
+                 patient.getZVal(Float.parseFloat(cursor.getString(3)));
+                }while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            return patient;
+    }*/
+
+
+
     //This function is used this to add entries to the database
     public void addHandler(String tableName,UserPatient patient) {
         String filePath = Environment.getExternalStorageDirectory().toString()
@@ -108,4 +129,5 @@ public class DBConnection   {
         cursor.close();
         return patient;
     }
+
 }
