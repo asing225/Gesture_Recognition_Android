@@ -11,6 +11,8 @@ import android.util.Log;
 import com.example.heartrate_android.UserPatient;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author amanjotsingh ,Sakshi Gautam
@@ -82,6 +84,26 @@ public class DBConnection   {
             cursor.close();
         } else {
             patient = null;
+        }
+        return patient;
+    }
+
+    public List<UserPatient> getValues(String tableName) {
+        String query = "Select * FROM " + tableName;
+        Cursor cursor = dbUser.rawQuery(query, null);
+        List<UserPatient> patient = new ArrayList();
+        //UserPatient patient = new UserPatient();
+
+        while (cursor!=null) {
+            cursor.moveToFirst();
+            UserPatient patientObj = new UserPatient(Long.parseLong(cursor.getString(0)), Float.parseFloat(cursor.getString(1)), Float.parseFloat(cursor.getString(2))
+                    , Float.parseFloat(cursor.getString(3)));
+            /*patient.setTimestamp(Long.parseLong(cursor.getString(0)));
+            patient.setXVal(Float.parseFloat(cursor.getString(1)));
+            patient.setYVal(Float.parseFloat(cursor.getString(2)));
+            patient.setZVal(Float.parseFloat(cursor.getString(3)));*/
+            patient.add(patientObj);
+            //cursor.close();
         }
         return patient;
     }

@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <Button
-            android:id="@+id/runBtn"
+            android:id="@+id/run"
             android:layout_width="49dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -58,7 +58,7 @@
             android:layout_marginLeft="40dp" />
 
         <Button
-            android:id="@+id/stopBtn"
+            android:id="@+id/stop"
             android:layout_width="44dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -73,13 +73,13 @@
     <FrameLayout
         android:id="@+id/visualizer1"
         android:layout_width="match_parent"
-        android:layout_height="389dp"
+        android:layout_height="220dp"
         android:layout_weight="1" />
 
     <FrameLayout
         android:id="@+id/visualizer2"
         android:layout_width="match_parent"
-        android:layout_height="213dp"
+        android:layout_height="218dp"
         android:layout_weight="1">
 
     </FrameLayout>
@@ -87,7 +87,7 @@
     <FrameLayout
         android:id="@+id/visualizer3"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
+        android:layout_height="172dp"
         android:layout_weight="1">
 
     </FrameLayout>

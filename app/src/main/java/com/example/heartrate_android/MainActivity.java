@@ -36,13 +36,14 @@ import service.DBConnection;
  */
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    private GraphView graphDisplay;
-    private float[] graphPlotValues;
-    private boolean graphMove = true;
-    private Handler graphControlHandler = new Handler();
-    private int plotRefresh = 0;
-    private MyRunnable runnableGraph;
-    private final int interval = 8;
+    private static GraphView graphDisplay;
+    private static float[] graphPlotValues;
+    private static boolean graphMove = true;
+    private static Handler graphControlHandler = new Handler();
+    private static int plotRefresh = 0;
+ //   public MyRunnable runnableGraph;
+    private static final int interval = 8;
+
 
 
     private EditText patientID;
@@ -54,7 +55,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private String ageText;
     private String nameText;
     private String sex;
-    private String tableName;
+
+  /*  public String getTableName() {
+        return tableName;
+    }*/
+
+    public String tableName;
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -136,8 +142,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
         secondPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(MainActivity.this, UserPage.class);
+                intent.putExtra("tableName", tableName);
                 startActivity(intent);
+               /* idText = patientID.getText().toString();
+                ageText = age.getText().toString();
+                nameText = name.getText().toString();
+                tableName = nameText + "_" + idText + "_" + ageText + "_" + sex;
+                if(!idText.equals("")) {
+                    if (!ageText.equals("")) {
+                        if (!nameText.equals("")) {
+                            if (sex != null) {
+                                try {
+                                    Toast.makeText(MainActivity.this, "Accelerometer Clicked", Toast.LENGTH_SHORT).show();
+                                }
+                                catch(Exception e){
+                                    Toast.makeText(MainActivity.this, "Accelerometer error"
+                                            , Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        }
+                    }
+                }*/
             }
         });
 
@@ -167,21 +195,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
     //This method takes care of the logic of the Run button
     //@ Manisha Miriyala
     private void onClickRun(){
-        dataGeneration();
+       // dataGeneration();
         Toast.makeText(this, "Graph Started", Toast.LENGTH_SHORT).show();
     }
     //This method takes care of the logic of the Stop button
     //@author Sakshi Gautam
     private void onClickStop(){
-        clearView();
+        //clearView();
         Toast.makeText(this, "Graph Stopped", Toast.LENGTH_SHORT).show();
-        graphMove = false;
+       // graphMove = false;
 
     }
 
     //This method clears the graph using the stop functionality
     //@author Sakshi Gautam
-    private void clearView(){
+    /*private void clearView(){
         graphDisplay.setValues(new float[0]);
         graphDisplay.invalidate();
     }
@@ -200,7 +228,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
     //This method ensures the graph is moving using runnable
     //@author Amanjot
-    public class MyRunnable implements Runnable{
+    public static class MyRunnable implements Runnable{
         @Override
         public void run() {
             if(graphMove){
@@ -211,7 +239,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
     //This method refreshes the data when the run button is called again
     //@author Narendra Mohan Murali Mohan
-    private void refreshData(){
+    public static void refreshData(){
         Random randomData = new Random();
         final int N = 50;
         float[] val = new float[N];
@@ -245,11 +273,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     //This method refreshes the graph after if run is pressed multiple times
     //@author Narendra Mohan Murali Mohan
-    private void graphRefresh(){
+    public static void graphRefresh(){
         refreshData();
         graphDisplay.setValues(graphPlotValues);
         graphDisplay.invalidate();
-    }
+    }*/
 
     //this method will ask for user permissions for read/write
     //@author Amanjot Singh

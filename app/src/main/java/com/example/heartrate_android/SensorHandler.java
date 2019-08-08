@@ -36,9 +36,7 @@ public class SensorHandler extends Service implements SensorEventListener{
         //if sensor is not accelerometer
         if(acc==null)
         {
-
             Toast.makeText(this,"Accelerometer is not connected..Try again!",Toast.LENGTH_LONG);
-
         }
         handleSensor.registerListener(this,acc,sample_rate);
         Toast.makeText(this,"Service Started",Toast.LENGTH_LONG);
