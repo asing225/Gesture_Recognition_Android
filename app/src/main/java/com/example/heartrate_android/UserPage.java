@@ -60,7 +60,7 @@ public class UserPage extends AppCompatActivity {
                 Intent intent = getIntent();
                 //tname = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
                 String tableName = intent.getStringExtra("tableName");
-                patientValues= dbc.getValues(tableName+".db");
+                patientValues= dbc.getValues(tableName);
                 Toast.makeText(getApplicationContext(), "Hi there, you clicked run button", Toast.LENGTH_SHORT).show();
             }
         });

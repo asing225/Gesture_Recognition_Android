@@ -1,12 +1,9 @@
 package service;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
-import android.util.Log;
 
 import com.example.heartrate_android.UserPatient;
 
@@ -42,33 +39,38 @@ public class DBConnection   {
 
         file.mkdirs();
         //File file = new File(folder, "patientDB_team4.db");
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(file+"/patientDB_team4.db", null);
-        db.beginTransaction();
+        SQLiteDatabase dbUser = SQLiteDatabase.openOrCreateDatabase(file+"/patientDB_team4.db", null);
+        dbUser.beginTransaction();
         try{
-            db.execSQL("create table "+ tableName +" ("
+            dbUser.execSQL("create table "+ tableName +" ("
                     + " timestamp DATETIME , "
                     + " xvalue REAL , "
                     + " yvalue REAL, "
                     + " zvalue REAL ); " );
-            db.setTransactionSuccessful();
+            dbUser.setTransactionSuccessful();
         }
         catch(Exception e){
             e.printStackTrace();
         }
         finally {
-            db.endTransaction();
+            dbUser.endTransaction();
         }
     }
 
     //This function is used this to add entries to the database
     public void addHandler(String tableName,UserPatient patient) {
+        String filePath = Environment.getExternalStorageDirectory().toString()
+                + "/Android/Data/CSE535_ASSIGNMENT2";
+        File file = new File(filePath);
+        SQLiteDatabase dbUser = SQLiteDatabase.openOrCreateDatabase(file+"/patientDB_team4.db", null);
+        dbUser.beginTransaction();
         ContentValues datapoints = new ContentValues();
         datapoints.put(TIMESTAMPCOL, patient.getTimestamp());
         datapoints.put(XCOL, patient.getXVal());
         datapoints.put(YCOL, patient.getYVal());
         datapoints.put(ZCOL, patient.getZVal());
-        dbUser.insert(TABLE_NAME, null, datapoints);
-
+        dbUser.insert(tableName, null, datapoints);
+        dbUser.endTransaction();
     }
     //This function is use this to check if a timestamp already exists in the database.
     public UserPatient findHandler(long timestamp) {
@@ -89,22 +91,21 @@ public class DBConnection   {
     }
 
     public List<UserPatient> getValues(String tableName) {
+        String filePath = Environment.getExternalStorageDirectory().toString()
+                + "/Android/Data/CSE535_ASSIGNMENT2";
+        File file = new File(filePath);
+        SQLiteDatabase dbUser = SQLiteDatabase.openOrCreateDatabase(file+"/patientDB_team4.db", null);
         String query = "Select * FROM " + tableName;
         Cursor cursor = dbUser.rawQuery(query, null);
         List<UserPatient> patient = new ArrayList();
-        //UserPatient patient = new UserPatient();
 
         while (cursor!=null) {
             cursor.moveToFirst();
             UserPatient patientObj = new UserPatient(Long.parseLong(cursor.getString(0)), Float.parseFloat(cursor.getString(1)), Float.parseFloat(cursor.getString(2))
                     , Float.parseFloat(cursor.getString(3)));
-            /*patient.setTimestamp(Long.parseLong(cursor.getString(0)));
-            patient.setXVal(Float.parseFloat(cursor.getString(1)));
-            patient.setYVal(Float.parseFloat(cursor.getString(2)));
-            patient.setZVal(Float.parseFloat(cursor.getString(3)));*/
             patient.add(patientObj);
-            //cursor.close();
         }
+        cursor.close();
         return patient;
     }
 }
