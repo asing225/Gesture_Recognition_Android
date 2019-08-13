@@ -6,14 +6,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.example.heartrate_android.UserPage;
-
 import java.io.File;
+
+/**
+ * @author Narendra Mohan Murali
+ * Class to handle download from server functionality*/
 
 public class DownloadFromServer extends UserPage {
     private static final int PERMISSION_STORAGE_CODE = 1000 ;
@@ -66,10 +66,4 @@ public class DownloadFromServer extends UserPage {
             }
         }
     }
-    }
-
-
-
-
-
-
+}
