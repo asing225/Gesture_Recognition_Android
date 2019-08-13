@@ -2,13 +2,16 @@ package service;
 
 import android.os.Environment;
 import android.util.Log;
-
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+/**
+ * @author amanjotsingh
+ * Class to handle upload to server functionality*/
 
 public class UploadToServer {
 
