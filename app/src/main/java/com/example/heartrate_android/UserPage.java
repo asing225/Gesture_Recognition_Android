@@ -1,108 +1,96 @@
 package com.example.heartrate_android;
 
-
-import android.app.Activity;
-import android.app.ProgressDialog;
-
 import android.Manifest;
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import java.io.File;
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import service.DBConnection;
 import service.DownloadFromServer;
 import service.UploadToServer;
 
-public class UserPage extends AppCompatActivity {
-    private GraphView graphDisplay;
-    private float[] graphPlotValues;
-    private boolean graphMove = true;
-    private Handler graphControlHandler = new Handler();
-    private int plotRefresh = 0;
-    private MainActivity.MyRunnable runnableGraph;
-    private final int interval = 8;
-    private static final int PERMISSION_STORAGE_CODE = 1000 ;
+/**
+ * @author amanjotsingh
+ * Library Used - https://github.com/jjoe64/GraphView/wiki/Summary-and-Features
+ * Reference - https://github.com/jjoe64/GraphView/wiki
+ *
+ * This class handles the button listeners for starting and stopping the accelerometer
+ * and plotting the values in graph and also upload and download calls.
+ * */
+
+public class UserPage extends AppCompatActivity implements SensorEventListener {
+
+    String tableName;
+    String dbFile;
+    private static final int PERMISSION_STORAGE_CODE = 1000;
     ProgressDialog dialog = null;
-    TextView messageText = null;
+    private SensorManager sensorManager;
+    private Sensor accel;
+    private float x, y, z = (float) 0.0;
+    List<DataPoint> xdataPoints = new ArrayList<>();
+    List<DataPoint> ydataPoints = new ArrayList<>();
+    List<DataPoint> zdataPoints = new ArrayList<>();
+    GraphView visualiser1 = null;
+    GraphView visualiser2 = null;
+    GraphView visualiser3 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-//        Button btn2 = (Button) findViewById(R.id.button);
-//        this.getApplicationContext();
-//
-//        btn2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent previousPage = new Intent(UserPage.this, MainActivity.class);
-//                startActivity(previousPage);
-//            }
-//
-//        });
-
-        FrameLayout graphVisualizer = (FrameLayout)findViewById(R.id.visualizer1);
-        graphPlotValues = new float[50];
-        String[] labelHorizontal = new String[]{"100", "200", "300", "400", "500"};
-        String[] labelVertical = new String[]{"100", "200", "300", "400", "500"};
-        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the Team4", labelHorizontal, labelVertical, true);
-        graphVisualizer.addView(graphDisplay);
-        Button uploadButton = (Button)findViewById(R.id.uploadButton);
-
-        final UploadToServer upload = new UploadToServer();
-
-        FrameLayout graphVisualizer1 = (FrameLayout)findViewById(R.id.visualizer2);
-        graphPlotValues = new float[50];
-        String[] labelHorizontal1 = new String[]{"100", "200", "300", "400", "500"};
-        String[] labelVertical1 = new String[]{"100", "200", "300", "400", "500"};
-        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the Team4", labelHorizontal, labelVertical, true);
-        graphVisualizer1.addView(graphDisplay);
-
-
-        FrameLayout graphVisualizer2 = (FrameLayout)findViewById(R.id.visualizer3);
-        graphPlotValues = new float[50];
-        String[] labelHorizontal2 = new String[]{"100", "200", "300", "400", "500"};
-        String[] labelVertical2 = new String[]{"100", "200", "300", "400", "500"};
-        graphDisplay = new GraphView(this, graphPlotValues, "GraphicView of the Team4", labelHorizontal, labelVertical, true);
-        graphVisualizer2.addView(graphDisplay);
-
-
-        // SET THE FILE NAME HERE FROM NARENDRA
-        final String filename = "patientDB_team4.db";
-
-       /* Button accelerometer =(Button)findViewById(R.id.nextPagebutton);
-
-
-        accelerometer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-
+        Intent intent = getIntent();
+        tableName = intent.getStringExtra("tableName");
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
+            accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
-        });*/
+        dbFile = Environment.getExternalStorageDirectory().toString()
+                + "/Android/Data/CSE535_ASSIGNMENT2/testHeart.db";
 
-        //final String filename = "patientDB_team4.db";
+        Button runBtn = (Button) findViewById(R.id.run);
+        runBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickRun();
+            }
+        });
 
-        final DownloadFromServer download= new DownloadFromServer(this);
+        Button stopBtn = (Button) findViewById(R.id.stop);
+        stopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickStop();
+            }
+        });
 
+        visualiser2 = (GraphView) findViewById(R.id.visualizer2);
+        visualiser1 = (GraphView) findViewById(R.id.visualizer1);
+        visualiser3 = (GraphView) findViewById(R.id.visualizer3);
+
+        Button uploadButton = (Button) findViewById(R.id.uploadButton);
+        final UploadToServer upload = new UploadToServer();
+        final String filename = "patientDB_team4.db";
+        final DownloadFromServer download = new DownloadFromServer(this);
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +102,6 @@ public class UserPage extends AppCompatActivity {
                     public void run() {
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                messageText.setText("uploading started.....");
                             }
                         });
 
@@ -125,21 +112,18 @@ public class UserPage extends AppCompatActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        if(result == 1){
+                        if (result == 1) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    messageText.setText("Upload Complete.");
                                 }
                             });
-                        }
-                        else if(result == 0){
+                        } else if (result == 0) {
                             dialog.dismiss();
 
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    messageText.setText("There was some error uploading file. Please try again.");
                                 }
                             });
                         }
@@ -149,27 +133,22 @@ public class UserPage extends AppCompatActivity {
             }
         });
 
-        Button download_Button = (Button)findViewById((R.id.download));
-
+        Button download_Button = (Button) findViewById((R.id.download));
 
         download_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
-                            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                            requestPermissions(permissions, PERMISSION_STORAGE_CODE);
-                    }
-
-                    else{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, PERMISSION_STORAGE_CODE);
+                    } else {
                         download.startDownloading();
 
                     }
-                }
-
-                else{
+                } else {
                     download.startDownloading();
 
                 }
@@ -177,5 +156,71 @@ public class UserPage extends AppCompatActivity {
         });
     }
 
+    // Registering the accelerometer
+    private void onClickRun() {
+        UserPage.super.onResume();
+        sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_NORMAL);
+        Toast.makeText(getApplicationContext(), "Hi there, you clicked run button", Toast.LENGTH_SHORT).show();
+    }
+
+    // stopping accelerometer
+    private void onClickStop() {
+        UserPage.super.onPause();
+        sensorManager.unregisterListener(this);
+        Toast.makeText(getApplicationContext(), "Hi there, you clicked stop button", Toast.LENGTH_SHORT).show();
+    }
+
+    // setting the accelerometer data into datapoints
+    private void refreshView() {
+        LineGraphSeries seriesX = new LineGraphSeries();
+        for (int i = 0; i < xdataPoints.size(); i++) {
+            //series.appendData(new DataPoint(dataPoints.get(i).getX(), dataPoints.get(i).getY()), true, 1000);
+            seriesX.appendData(xdataPoints.get(i), true, 100);
+        }
+        //series.appendData(new DataPoint(Double.parseDouble("0.5"), Double.parseDouble("0.7")), true, 1000);
+        seriesX.setColor(Color.RED);
+        seriesX.setThickness(9);
+        seriesX.setDrawDataPoints(true);
+        visualiser1.addSeries(seriesX);
+
+
+        LineGraphSeries seriesY = new LineGraphSeries();
+        for (int i = 0; i < ydataPoints.size(); i++) {
+            seriesY.appendData(ydataPoints.get(i), true, 100);
+        }
+        seriesY.setColor(Color.BLUE);
+        seriesY.setThickness(9);
+        seriesY.setDrawDataPoints(true);
+        visualiser2.addSeries(seriesY);
+
+        LineGraphSeries seriesZ = new LineGraphSeries();
+        for (int i = 0; i < zdataPoints.size(); i++) {
+            seriesZ.appendData(zdataPoints.get(i), true, 100);
+        }
+        seriesZ.setColor(Color.GREEN);
+        seriesZ.setThickness(9);
+        seriesZ.setDrawDataPoints(true);
+        visualiser3.addSeries(seriesZ);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        x = event.values[0];
+        y = event.values[1];
+        z = event.values[2];
+
+        UserPatient pat = new UserPatient(System.currentTimeMillis(), x, y, z);
+        xdataPoints.add(new DataPoint(new Date(System.currentTimeMillis()), x));
+        ydataPoints.add(new DataPoint(new Date(System.currentTimeMillis()), y));
+        zdataPoints.add(new DataPoint(new Date(System.currentTimeMillis()), z));
+        //dataPoints.add(new DataPoint((flag++)/10, x));
+        refreshView();
+        new DBConnection(this, tableName, dbFile).addHandler(tableName, pat);
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
 }
 
