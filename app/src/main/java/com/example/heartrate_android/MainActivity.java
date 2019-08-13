@@ -1,3 +1,4 @@
+
 package com.example.heartrate_android;
 
 import android.Manifest;
@@ -12,12 +13,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
 import androidx.core.app.ActivityCompat;
 
 import java.io.File;
+
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+
 import java.util.Random;
 
 import service.DBConnection;
@@ -30,13 +36,15 @@ import service.DBConnection;
  */
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    private GraphView graphDisplay;
-    private float[] graphPlotValues;
-    private boolean graphMove = true;
-    private Handler graphControlHandler = new Handler();
-    private int plotRefresh = 0;
-    private MyRunnable runnableGraph;
-    private final int interval = 8;
+    private static GraphView graphDisplay;
+    private static float[] graphPlotValues;
+    private static boolean graphMove = true;
+    private static Handler graphControlHandler = new Handler();
+    private static int plotRefresh = 0;
+    public MyRunnable runnableGraph;
+    private static final int interval = 8;
+
+
 
     private EditText patientID;
     private EditText age;
@@ -47,7 +55,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private String ageText;
     private String nameText;
     private String sex;
-    private String tableName;
+
+  /*  public String getTableName() {
+        return tableName;
+    }*/
+
+    public String tableName;
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -55,7 +68,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     };
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
-
     //This part handles the button backend (Event handlers) and Data Initialization for Graph
     //@author Narendra Mohan Murali Mohan and Amanjot Singh
     @Override
@@ -64,11 +76,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         findViewById(R.id.runBtn).setOnClickListener(this);
         findViewById(R.id.stopBtn).setOnClickListener(this);
+
         patientID = (EditText) findViewById(R.id.et_patientId);
         age = (EditText) findViewById(R.id.et_age);
         name = (EditText) findViewById(R.id.patientName);
         radioGroup = (RadioGroup) findViewById(R.id.radio_group);
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int in) {
@@ -130,8 +142,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
         secondPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(MainActivity.this, UserPage.class);
+                intent.putExtra("tableName", tableName);
                 startActivity(intent);
+               /* idText = patientID.getText().toString();
+                ageText = age.getText().toString();
+                nameText = name.getText().toString();
+                tableName = nameText + "_" + idText + "_" + ageText + "_" + sex;
+                if(!idText.equals("")) {
+                    if (!ageText.equals("")) {
+                        if (!nameText.equals("")) {
+                            if (sex != null) {
+                                try {
+                                    Toast.makeText(MainActivity.this, "Accelerometer Clicked", Toast.LENGTH_SHORT).show();
+                                }
+                                catch(Exception e){
+                                    Toast.makeText(MainActivity.this, "Accelerometer error"
+                                            , Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        }
+                    }
+                }*/
             }
         });
 
@@ -161,7 +195,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     //This method takes care of the logic of the Run button
     //@ Manisha Miriyala
     private void onClickRun(){
-        dataGeneration();
+       dataGeneration();
         Toast.makeText(this, "Graph Started", Toast.LENGTH_SHORT).show();
     }
     //This method takes care of the logic of the Stop button
@@ -169,7 +203,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void onClickStop(){
         clearView();
         Toast.makeText(this, "Graph Stopped", Toast.LENGTH_SHORT).show();
-        graphMove = false;
+       // graphMove = false;
 
     }
 
@@ -194,7 +228,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
     //This method ensures the graph is moving using runnable
     //@author Amanjot
-    private class MyRunnable implements Runnable{
+    public static class MyRunnable implements Runnable{
         @Override
         public void run() {
             if(graphMove){
@@ -205,7 +239,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
     //This method refreshes the data when the run button is called again
     //@author Narendra Mohan Murali Mohan
-    private void refreshData(){
+    public static void refreshData(){
         Random randomData = new Random();
         final int N = 50;
         float[] val = new float[N];
@@ -239,12 +273,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     //This method refreshes the graph after if run is pressed multiple times
     //@author Narendra Mohan Murali Mohan
-    private void graphRefresh(){
+    public static void graphRefresh(){
         refreshData();
         graphDisplay.setValues(graphPlotValues);
         graphDisplay.invalidate();
     }
-
     //this method will ask for user permissions for read/write
     //@author Amanjot Singh
     public static void verifyStoragePermissions(Activity activity){
@@ -257,4 +290,5 @@ public class MainActivity extends Activity implements View.OnClickListener {
             );
         }
     }
+
 }
