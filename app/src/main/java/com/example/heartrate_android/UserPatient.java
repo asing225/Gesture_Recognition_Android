@@ -1,5 +1,9 @@
 package com.example.heartrate_android;
 
+/**
+ * @author amanjotsingh
+ * Class to capture the x, y, z values and timestamp*/
+
 public class UserPatient {
     //fields
     private long UserTimeStamp;
