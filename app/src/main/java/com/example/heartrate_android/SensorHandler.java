@@ -11,22 +11,20 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import service.DBConnection;
-/*
-The following code performs all accelerometer operations
-@author Sakshi Gautam
-*/
+/**
+ * @author amanjotsingh
+ * Reference - https://examples.javacodegeeks.com/android/core/hardware/sensor/android-accelerometer-example/
+ * This class initializes all the methods to listen to the accelerometer sensor
+ * */
 public class SensorHandler extends Service implements SensorEventListener{
 
-    private DBConnection manageDB= new DBConnection();
-    static String titleDB="ID_AGE_NAME_SEX";
+    private DBConnection manageDB= null;
     private SensorManager handleSensor;
     private Sensor acc;
     private int sample_rate = 1000000;
     private String user = "";
     public static String LOG_TAG = "SensorListenerService";
-    private long timeStamp;
 
-    //This function creates a service for accelerometer
     @Override
     public void onCreate() {
         //start sensor
@@ -36,9 +34,7 @@ public class SensorHandler extends Service implements SensorEventListener{
         //if sensor is not accelerometer
         if(acc==null)
         {
-
             Toast.makeText(this,"Accelerometer is not connected..Try again!",Toast.LENGTH_LONG);
-
         }
         handleSensor.registerListener(this,acc,sample_rate);
         Toast.makeText(this,"Service Started",Toast.LENGTH_LONG);
@@ -68,7 +64,6 @@ public class SensorHandler extends Service implements SensorEventListener{
             float yVal = eventSense.values[1];
             float zVal = eventSense.values[2];
             long timeStamp = System.currentTimeMillis()/1000;
-            addToDB(timeStamp,xVal,yVal,zVal);
             }
         }
 
@@ -82,20 +77,5 @@ public class SensorHandler extends Service implements SensorEventListener{
         handleSensor.unregisterListener(this);
         Log.d(LOG_TAG,"Service Stopped!");
         super.onDestroy();
-    }
-    //This function is called in the main activity after the user information has been entered in order
-    //to set up the database with the correct name
-    public static void setDbName(String name)
-    {
-        titleDB = name;
-    }
-
-    //This function is called after the run button is pressed in the GUI so the correct table is called
-    public void addToDB(float timestamp,float x, float y, float z)
-    {
-        UserPatient user = new UserPatient(timeStamp, x, y, z);
-        manageDB.findHandler(timeStamp);
-        //Send the patient to the database
-        manageDB.addHandler(titleDB, user);
     }
 }
